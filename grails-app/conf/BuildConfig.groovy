@@ -6,6 +6,7 @@ grails.project.target.level = 1.6
 grails.project.source.level = 1.6
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
+def opencmisVersion = '0.6.0'
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
     inherits("global") {
@@ -34,6 +35,22 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
         // runtime 'mysql:mysql-connector-java:5.1.16'
+
+        // Para Usar OpenCMIS
+        compile ("org.apache.chemistry.opencmis:chemistry-opencmis-commons-api:${opencmisVersion}",
+                 "org.apache.chemistry.opencmis:chemistry-opencmis-client-api:${opencmisVersion}",
+                 "org.apache.chemistry.opencmis:chemistry-opencmis-client-impl:${opencmisVersion}") {
+            excludes 'jaxws-rt'
+        }
+
+        // Para Usar OpenCMIS
+        runtime ("org.apache.chemistry.opencmis:chemistry-opencmis-commons-api:${opencmisVersion}",
+                 "org.apache.chemistry.opencmis:chemistry-opencmis-commons-impl:${opencmisVersion}",
+                 "org.apache.chemistry.opencmis:chemistry-opencmis-client-api:${opencmisVersion}",
+                 "org.apache.chemistry.opencmis:chemistry-opencmis-client-bindings:${opencmisVersion}",
+                 "org.apache.chemistry.opencmis:chemistry-opencmis-client-impl:${opencmisVersion}") {
+            excludes 'jaxws-rt'
+        }
     }
 
     plugins {
