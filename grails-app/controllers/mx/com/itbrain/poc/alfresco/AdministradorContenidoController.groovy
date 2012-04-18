@@ -21,9 +21,9 @@ class AdministradorContenidoController {
         (SessionParameter.PASSWORD): ConfigurationHolder.config.cmis.password,
         (SessionParameter.ATOMPUB_URL): ConfigurationHolder.config.cmis.url,
         (SessionParameter.BINDING_TYPE): BindingType.ATOMPUB.value(),
-        (SessionParameter.REPOSITORY_ID): ConfigurationHolder.config.cmis.repository,
-        (SessionParameter.LOCALE_ISO3166_COUNTRY): "gb",
-        (SessionParameter.LOCALE_ISO639_LANGUAGE): "en",
+        (SessionParameter.REPOSITORY_ID): ConfigurationHolder.config.cmis.repositoryId,
+        (SessionParameter.LOCALE_ISO3166_COUNTRY): "mx",
+        (SessionParameter.LOCALE_ISO639_LANGUAGE): "es",
         (SessionParameter.LOCALE_VARIANT): ""]
 
     def index() {

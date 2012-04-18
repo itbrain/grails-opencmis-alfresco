@@ -97,5 +97,5 @@ cmis {
     user = "admin"
     password = "admin"
     url = "http://192.168.56.101:8080/alfresco/s/api/cmis"
-    repository = "dc917baa-ef7b-4ae8-b2eb-f7b6d41d0cae"
+    repositoryId = "dc917baa-ef7b-4ae8-b2eb-f7b6d41d0cae"
 }
