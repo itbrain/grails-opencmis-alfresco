@@ -13,6 +13,30 @@
             </div>
         </div>
     </div>
+    <div id="createFolderDiv">
+        <button id="createFolderButton" class="btn-mini"><i class="icon-plus-sign"></i></button>
+        <div id="createFolderDialog" style="display: none;">
+            <g:form name="createFolderForm" controller="administradorContenido" action="createFolder" method="POST">
+                <g:hiddenField name="path" value="${currentPath}"></g:hiddenField>
+                New Folder:<input type="text" name="folderName">
+                <input type="submit" value="Create">
+            </g:form>
+        </div>
+        <script type="text/javascript">
+            $("#createFolderButton").click(function() {
+                $("#createFolderDialog").dialog('open');
+            });
+            $("#createFolderDialog").dialog({
+                bgiframe: false,
+                height: 250,
+                width: 400,
+                autoOpen: false,
+                modal: true,
+                closeOnEscape: true,
+                draggable: false
+            });
+        </script>
+    </div>
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
@@ -57,6 +81,7 @@
                     <span class="label label-info">Last Modification Date: ${((CmisObjectProperties) it).getLastModificationDate().getTime().format("dd/MM/yyyy")}</span>
                 </td>
                 <td>
+                    <span class="label label-warning"><g:link controller="administradorContenido" action="viewProperties" params="${[path: currentPath, link: it.name]}">Properties</g:link> </span>
                     <g:if test="${!isFolder}">
                         <g:form name="downloadFileForm_${count}" controller="administradorContenido" action="downloadFile" method="GET">
                             <g:hiddenField name="path" value="${currentPath}"></g:hiddenField>
@@ -88,6 +113,9 @@
                             });
                             $("#removeButton_${count}").click(function() {
                                 $('#deleteFileForm_${count}').submit();
+                            });
+                            $("#propsButton_${count}").click(function() {
+
                             });
                             $("#updateFileDiv_${count}").dialog({
                                 bgiframe: false,

@@ -12,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile
 import org.apache.chemistry.opencmis.commons.data.ContentStream
 import org.apache.chemistry.opencmis.commons.PropertyIds
 import org.apache.chemistry.opencmis.commons.enums.VersioningState
+import org.apache.chemistry.opencmis.client.api.CmisObjectProperties
+import org.apache.chemistry.opencmis.client.api.Property
 
 class AdministradorContenidoController {
     def cmisSessionFactory
@@ -53,6 +55,24 @@ class AdministradorContenidoController {
         render(view: "index", model: [currentPath: folder.getPath(), currentFolder: list])
     }
 
+    def createFolder() {
+        def session = cmisSessionFactory.createSession(alfrescoParams)
+        def folder = (Folder) session.getObjectByPath(params.path)
+        Map<String, Object> properties = new HashMap<String, Object>()
+        properties.put(PropertyIds.OBJECT_TYPE_ID, "cmis:folder")
+        properties.put(PropertyIds.NAME, params.folderName)
+        properties.put(PropertyIds.CREATED_BY, "test")
+        folder.createFolder(properties)
+        redirect(action: 'viewFolder', params: [path: params.path])
+    }
+
+    def viewProperties() {
+        def session = cmisSessionFactory.createSession(alfrescoParams)
+        def cmisObjectProperties = (CmisObjectProperties) session.getObjectByPath(params.path + (params.path == "/" ? "" : "/") + params.link)
+        List<Property<?>> props = cmisObjectProperties.getProperties();
+        render(view: "propiedades", model: [properties: props])
+    }
+
     def downloadFile() {
         def session = cmisSessionFactory.createSession(alfrescoParams)
         def doc = (Document) session.getObjectByPath(params.path + (params.path == "/" ? "" : "/") + params.link)
@@ -90,14 +110,14 @@ class AdministradorContenidoController {
             redirect(action: 'viewFolder', params: [path: params.path])
         }
         def buf = f.getBytes()
-        ByteArrayInputStream input = new ByteArrayInputStream(buf);
+        ByteArrayInputStream input = new ByteArrayInputStream(buf)
         ContentStream contentStream = session.getObjectFactory().createContentStream(f.originalFilename,
-            buf.length, f.contentType, input);
-        Map<String, Object> properties = new HashMap<String, Object>();
+            buf.length, f.contentType, input)
+        Map<String, Object> properties = new HashMap<String, Object>()
         properties.put(PropertyIds.OBJECT_TYPE_ID, "cmis:document");
-        properties.put(PropertyIds.NAME, f.originalFilename);
+        properties.put(PropertyIds.NAME, f.originalFilename)
         def folder = (Folder) session.getObjectByPath(params.path)
-        folder.createDocument(properties, contentStream, VersioningState.MAJOR);
+        folder.createDocument(properties, contentStream, VersioningState.MAJOR)
         redirect(action: 'viewFolder', params: [path: params.path])
     }
 
@@ -108,11 +128,11 @@ class AdministradorContenidoController {
             redirect(action: 'viewFolder', params: [path: params.path])
         }
         def buf = f.getBytes()
-        ByteArrayInputStream input = new ByteArrayInputStream(buf);
+        ByteArrayInputStream input = new ByteArrayInputStream(buf)
         ContentStream contentStream = session.getObjectFactory().createContentStream(f.originalFilename,
-            buf.length, f.contentType, input);
+            buf.length, f.contentType, input)
         def doc = (Document) session.getObjectByPath(params.path + (params.path == "/" ? "" : "/") + params.link)
-        doc.setContentStream(contentStream, true);
+        doc.setContentStream(contentStream, true)
         redirect(action: 'viewFolder', params: [path: params.path])
     }
 }
